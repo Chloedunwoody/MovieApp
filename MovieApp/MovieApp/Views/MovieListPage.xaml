@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MovieApp.Models"
+             xmlns:viewmodels="clr-namespace:MovieApp.ViewModels"
+             x:Class="MovieApp.Views.MovieListPage">
+    
+    
+    <ContentPage.BindingContext>
+        <viewmodels:MovieListViewModel/>
+    </ContentPage.BindingContext>
+    
+
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding MovieGroup}" 
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      RefreshCommand="{Binding RefreshCommand}"
+                      CachingStrategy="RecycleElement" 
+                      
+                      RefreshControlColor="AliceBlue"
+                      SeparatorColor="Red" 
+                      HasUnevenRows="True"
+                      IsGroupingEnabled="True"
+                      ItemSelected="ListView_ItemSelected"
+                      ItemTapped="ListView_ItemTapped"
+                      GroupDisplayBinding="{Binding Key}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Movie">
+                    <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Favorite" 
+                                          Clicked="MenuItem_Clicked"/>
+                                <MenuItem Text="Delete" 
+                                          IsDestructive="True" 
+                                          Clicked="MenuItem_Clicked"/>
+                            </ViewCell.ContextActions>
+                        
+                            <Frame CornerRadius="20" 
+                                   HasShadow="True">
+                                
+                            
+                        <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding Image}" 
+                                           WidthRequest="66"/>
+                                    <StackLayout VerticalOptions="Center">
+                                    
+                                    <Label Text="{Binding Title}" 
+                                           VerticalOptions="Center"/>
+                                    <Label
+                                        Text="{Binding Genre}"
+                                        VerticalOptions="Center"/>
+
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Header>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="Best Movies" FontSize="Medium" TextColor="Blue"/>
+                </StackLayout>
+            </ListView.Header>
+                <ListView.Footer>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button Text="Load More"/>
+                    </StackLayout>
+                </ListView.Footer>
+        </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
